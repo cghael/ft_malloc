@@ -59,11 +59,7 @@ typedef struct		s_zone
 	unsigned int	status;			// ТИНИ, СМОЛ или ЛАРДЖ
 	unsigned int	free_size;		// сколько осталось пустого места в одной зоне
 	unsigned int	size;			// количесто байт всего в зоне
-//	unsigned int	chunk1;
-//	unsigned int	chunk2;
-//	unsigned int	chunk3;
 	struct s_zone	*next;
-//	struct s_zone	*prev;
 }					t_zone;
 
 /*

@@ -43,17 +43,17 @@ typedef struct		s_zone
 Tiny and small chunks we will be store in such zones.
 Then we get the following
 ```
-                 Z O N E
+Z O N E (status == TINY || status == SMALL)
  --------------------------------------
 |        |       |       |     |       |
 | t_zone | CHUNK | CHUNK | ... | CHUNK |
 |        |       |       |     |       |
  --------------------------------------
-  size = sizeof(t_zone) + sizeof(chunk) * n_chunks + free_size
+size = sizeof(t_zone) + sizeof(chunk) * n_chunks + free_size
 ```
 Large chunks we will be store out of zone
 ```
-                 Z O N E
+        Z O N E (status == LARGE)
  --------------------------------------
 |        |                             |
 | t_zone |    L A R G E   C H U N K    |

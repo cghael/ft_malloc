@@ -35,7 +35,7 @@
 
 /*
 ** Участок памяти:	свойства области памяти,
-**					выделенной программе
+**					выделенной для программы
 */
 
 typedef struct		s_alloc
@@ -59,9 +59,9 @@ typedef struct		s_zone
 	unsigned int	status;			// ТИНИ, СМОЛ или ЛАРДЖ
 	unsigned int	free_size;		// сколько осталось пустого места в одной зоне
 	unsigned int	size;			// количесто байт всего в зоне
-	unsigned int	chunk1;
-	unsigned int	chunk2;
-	unsigned int	chunk3;
+//	unsigned int	chunk1;
+//	unsigned int	chunk2;
+//	unsigned int	chunk3;
 	struct s_zone	*next;
 //	struct s_zone	*prev;
 }					t_zone;
@@ -81,8 +81,9 @@ typedef struct		s_info
 ** -------------------------------- functions ----------------------------------
 */
 
+t_info				*get_malloc_manager();
 void				*malloc(size_t size);
-int					ft_find_block_size(size_t size);
-void				*memory_allocation(size_t size, t_info *malloc_manager);
+int					ft_find_block_size(size_t size, t_info *malloc_manager);
+void				*ft_memory_allocation(size_t size, t_info *malloc_manager);
 
 #endif //FT_MALLOC_H

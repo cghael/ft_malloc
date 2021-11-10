@@ -7,36 +7,36 @@ Before embarking on this project, I thought there was some kind of magic going o
 ## Mandatory part
 * With performance in mind, you must limit the number of calls to mmap(), but also to munmap(). You have to “pre-allocate” some memory zones to store your “small” and “medium” malloc.
 * Each zone must contain at least 100 allocations.
-* The size of these zones must be a multiple of getpagesize().
+* The allowed_size of these zones must be a multiple of getpagesize().
 * You also must write a function that allows visual on the state of the allocated memory
 zones. 
 
 ## How can we limit the number of calls to mmap()
 First of all, every our chunk of allocated memory will have a structure that describes properties.
 ```
-typedef struct		s_alloc
+typedef struct		s_chunk
 {
 	unsigned char	status;         // is this memory free or not
-	unsigned int	size;           // the size of the allocated chunk
-	struct s_alloc	*next;
-}                       t_alloc;
+	unsigned int	allowed_size;           // the allowed_size of the allocated chunk
+	struct s_chunk	*next;
+}                       t_chunk;
 ```
 Thus, we get the following structure:
 ```
                     C H U N K
  -----------------------------------------------
-| t_alloc |  requested memory for some program  |
+| t_chunk |  requested memory for some program  |
  -----------------------------------------------
-      size = requested size + sizeof(t_alloc)
+      allowed_size = requested allowed_size + sizeof(t_chunk)
 ```
 Then we wiil group this chunks into zones, where we can contain >= 100 allocations
 ```
 typedef struct		s_zone
 {
-	t_alloc		*start;			// first allocated chunk in zone
+	t_chunk		*start;			// first allocated chunk in zone
 	unsigned int	status;			// three types of zones: TINY, SMALL, LARGE
 	unsigned int	free_size;		// how much free space is left in one zone
-	unsigned int	size;			// total size of the zone
+	unsigned int	allowed_size;			// total allowed_size of the zone
 	struct s_zone	*next;
 }			t_zone;
 ```
@@ -49,7 +49,7 @@ Z O N E (status == TINY || status == SMALL)
 | t_zone | CHUNK | CHUNK | ... | CHUNK |
 |        |       |       |     |       |
  --------------------------------------
-size = sizeof(t_zone) + sizeof(chunk) * n_chunks + free_size
+allowed_size = sizeof(t_zone) + sizeof(chunk) * n_chunks + free_size
 ```
 Large chunks we will be store out of zone
 ```
@@ -59,10 +59,10 @@ Large chunks we will be store out of zone
 | t_zone |    L A R G E   C H U N K    |
 |        |                             |
  --------------------------------------
-  size = sizeof(t_zone) + sizeof(chunk)
+  allowed_size = sizeof(t_zone) + sizeof(chunk)
 ```
 
-Thus, we will call mmap() and ask the system for memory the size of a zone, and then, if necessary, issue new chunks from this zone for the program.
+Thus, we will call mmap() and ask the system for memory the allowed_size of a zone, and then, if necessary, issue new chunks from this zone for the program.
 
 We will have one variable that will store the head of the list of allocated zones and a pointer to the current zone in which we can provide the next chunk of memory
 ```

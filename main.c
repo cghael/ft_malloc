@@ -3,7 +3,7 @@
 
 int main()
 {
-	int x = getpagesize();
-	printf("%d\n", x);
+	void *x = malloc(10);
+	printf("%p\n", x);
 	return 0;
 }

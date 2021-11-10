@@ -38,12 +38,12 @@
 **					выделенной для программы
 */
 
-typedef struct		s_alloc
+typedef struct		s_chunk
 {
-	unsigned char	status;			// занято или не занято
-	unsigned int	size;			// размер, который выделился
-	struct s_alloc	*next;
-}					t_alloc;
+	unsigned int	allowed_size;			// размер, который можно отдать программе
+	struct s_chunk	*next;
+	struct s_chunk	*prev;
+}					t_chunk;
 
 /*
 ** Зона памяти:	свойства зарезервированной область, в которой можно выделять
@@ -55,10 +55,10 @@ typedef struct		s_alloc
 
 typedef struct		s_zone
 {
-	t_alloc			*start;			// начало первого выделенного участка в зоне
 	unsigned int	status;			// ТИНИ, СМОЛ или ЛАРДЖ
-	unsigned int	free_size;		// сколько осталось пустого места в одной зоне
 	unsigned int	size;			// количесто байт всего в зоне
+	t_chunk			*free_start;
+	t_chunk			*alloc_start;
 	struct s_zone	*next;
 }					t_zone;
 
@@ -69,7 +69,8 @@ typedef struct		s_zone
 typedef struct		s_info
 {
 	t_zone			*start;
-	t_zone			*current;
+	t_zone			*current_zone;
+	t_chunk			*current_chunk;
 }					t_info;
 
 
@@ -80,6 +81,7 @@ typedef struct		s_info
 t_info				*get_malloc_manager();
 void				*malloc(size_t size);
 int					ft_find_block_size(size_t size, t_info *malloc_manager);
-void				*ft_memory_allocation(size_t size, t_info *malloc_manager);
+//void				*ft_memory_allocation(size_t allowed_size, t_info *malloc_manager);
+size_t				ft_get_new_zone_size(int status, size_t size);
 
 #endif //FT_MALLOC_H

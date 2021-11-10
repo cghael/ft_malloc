@@ -40,7 +40,7 @@
 
 typedef struct		s_chunk
 {
-	unsigned int	allowed_size;			// размер, который можно отдать программе
+	uint64_t		allowed_size;			// размер, который можно отдать программе
 	struct s_chunk	*next;
 	struct s_chunk	*prev;
 }					t_chunk;
@@ -56,7 +56,7 @@ typedef struct		s_chunk
 typedef struct		s_zone
 {
 	unsigned int	status;			// ТИНИ, СМОЛ или ЛАРДЖ
-	unsigned int	size;			// количесто байт всего в зоне
+	uint64_t		size;			// количесто байт всего в зоне
 	t_chunk			*free_start;
 	t_chunk			*alloc_start;
 	struct s_zone	*next;

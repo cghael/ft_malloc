@@ -15,10 +15,10 @@
 
 static size_t	get_small_tiny_zone_size(int status, size_t size, size_t page_size)
 {
-	size_t	zone_size;
-	size_t	status_size;
-	size_t	chunk_size;
-	size_t	number_of_chunks;
+	size_t		zone_size;
+	size_t		status_size;
+	size_t		chunk_size;
+	size_t		number_of_chunks;
 
 	zone_size = page_size;
 	status_size = (status == TINY) ? TINY_SIZE : SMALL_SIZE;
@@ -34,7 +34,7 @@ static size_t	get_small_tiny_zone_size(int status, size_t size, size_t page_size
 
 static size_t	get_large_zone_size(size_t size, size_t page_size)
 {
-	size_t	zone_size;
+	uint64_t	zone_size;
 
 	zone_size = (size + sizeof(t_zone) + sizeof(t_chunk) + page_size) / page_size * page_size;
 	return (zone_size);

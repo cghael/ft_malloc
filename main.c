@@ -4,7 +4,7 @@
 
 int main()
 {
-	void *x = malloc(999999999999999999);
+	void *x = malloc(9999999999999);
 	printf("%p\n", x);
 	free(x);
 	return 0;

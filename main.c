@@ -3,7 +3,8 @@
 
 int main()
 {
-	void *x = malloc(10);
+	void *x = malloc(67890);
 	printf("%p\n", x);
+	free(x);
 	return 0;
 }

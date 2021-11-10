@@ -47,7 +47,7 @@ static void		*ft_memory_allocation(size_t size, t_info *malloc_manager)
 
 	tmp_free_chunk = malloc_manager->current_chunk;
 	tmp_alloc_chunk = tmp_free_chunk;
-	tmp_free_chunk = tmp_free_chunk + size + sizeof(t_chunk);
+	tmp_free_chunk = (t_chunk *)((uint64_t)tmp_free_chunk + size + sizeof(t_chunk));
 
 	tmp_free_chunk->next = tmp_alloc_chunk->next;
 	tmp_free_chunk->prev = tmp_alloc_chunk->prev;

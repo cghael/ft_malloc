@@ -48,8 +48,11 @@ static void		*ft_memory_allocation(size_t size, t_info *malloc_manager)
 	tmp_free_chunk = malloc_manager->current_chunk;
 	tmp_alloc_chunk = tmp_free_chunk;
 	tmp_free_chunk = tmp_free_chunk + size + sizeof(t_chunk);
+
 	tmp_free_chunk->next = tmp_alloc_chunk->next;
 	tmp_free_chunk->prev = tmp_alloc_chunk->prev;
+	if (tmp_free_chunk->prev == NULL)
+		malloc_manager->current_zone->alloc_start = tmp_free_chunk;
 	tmp_free_chunk->allowed_size = tmp_alloc_chunk->allowed_size - size - sizeof(t_chunk);
 	tmp_alloc_chunk->allowed_size = size;
 	tmp_alloc_chunk->next = NULL;
@@ -70,7 +73,7 @@ void			*malloc(size_t size)
 	// todo проверка на мьютекс для бонусов
 
 	res = NULL;
-	malloc_manager = get_malloc_manager();
+	malloc_manager = ft_get_malloc_manager();
 	tmp_res = ft_find_block_size(size, malloc_manager);			// проверяем, можно ли вообще выделить память такого размера
 	if (tmp_res == EXIT_SUCCESS)								// если можно,
 		res = ft_memory_allocation(size, malloc_manager);		// выделяем память

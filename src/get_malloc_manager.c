@@ -4,7 +4,7 @@
 
 #include "ft_malloc.h"
 
-t_info		*get_malloc_manager()
+t_info		*ft_get_malloc_manager()
 {
 	static t_info	malloc_manager;
 

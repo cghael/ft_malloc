@@ -88,9 +88,11 @@ static t_zone		*ft_allocate_new_zone(size_t size)
 
 	status = get_status(size);
 	zone_size = ft_get_new_zone_size(status, size);
+
 	tmp = mmap(0, zone_size, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0); //todo разобраться с флагами
-	if (tmp == NULL)
+	if (tmp == MAP_FAILED)
 		return (NULL);
+
 	tmp->status = status;
 	tmp->size = zone_size;
 	tmp->alloc_start = NULL;

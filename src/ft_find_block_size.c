@@ -94,7 +94,7 @@ static t_zone		*ft_allocate_new_zone(size_t size)
 	tmp->status = status;
 	tmp->size = zone_size;
 	tmp->alloc_start = NULL;
-	tmp->free_start = (t_chunk*)(tmp + sizeof(t_zone));
+	tmp->free_start = (t_chunk*)((uint64_t)tmp + sizeof(t_zone));
 	tmp->free_start->allowed_size = tmp->size - sizeof(t_zone) - sizeof(t_chunk);
 	tmp->free_start->next = tmp->free_start;
 	tmp->free_start->prev = tmp->free_start;

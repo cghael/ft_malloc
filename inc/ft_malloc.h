@@ -81,7 +81,6 @@ typedef struct		s_info
 t_info				*ft_get_malloc_manager();
 void				*malloc(size_t size);
 int					ft_find_block_size(size_t size, t_info *malloc_manager);
-//void				*ft_memory_allocation(size_t allowed_size, t_info *malloc_manager);
 size_t				ft_get_new_zone_size(int status, size_t size);
 
 void				free(void *ptr);

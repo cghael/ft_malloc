@@ -42,26 +42,41 @@ static void		ft_add_chunk_to_list(t_info *malloc_manager, t_chunk *tmp)
 
 static void		*ft_memory_allocation(size_t size, t_info *malloc_manager)
 {
-	t_chunk	*tmp_free_chunk;
-	t_chunk	*tmp_alloc_chunk;
+	t_chunk	*free;
+	t_chunk	*alloc;
+	void	*res;
 
-	tmp_free_chunk = malloc_manager->current_chunk;
-	tmp_alloc_chunk = tmp_free_chunk;
-	tmp_free_chunk = (t_chunk *)((uint64_t)tmp_free_chunk + size + sizeof(t_chunk));
+	free = malloc_manager->current_chunk;
+	alloc = free;
 
-	tmp_free_chunk->next = tmp_alloc_chunk->next;
-	tmp_free_chunk->prev = tmp_alloc_chunk->prev;
-	if (tmp_free_chunk->prev == NULL)
-		malloc_manager->current_zone->alloc_start = tmp_free_chunk;
-	tmp_free_chunk->allowed_size = tmp_alloc_chunk->allowed_size - size - sizeof(t_chunk);
-	tmp_alloc_chunk->allowed_size = size;
-	tmp_alloc_chunk->next = NULL;
-	tmp_alloc_chunk->prev = NULL;
+	if (free->allowed_size > (size + sizeof(t_chunk)))
+	{
+		free = (t_chunk *)((uint64_t)free + size + sizeof(t_chunk) + 1);
+		free->next = alloc->next;
+		free->prev = alloc->prev;
+		if (free->prev == NULL)
+			malloc_manager->current_zone->free_start = free;
+		free->allowed_size =
+				alloc->allowed_size - size - sizeof(t_chunk) - 1;
+	}
+	else
+	{
+		if (free->prev == NULL)
+			malloc_manager->current_zone->free_start = free->next;
+		else
+			free->prev->next = free->next;
+		if (free->next)
+			free->next->prev = free->prev;
+	}
+	alloc->allowed_size = size;
+	alloc->next = NULL;
+	alloc->prev = NULL;
 
 	// сейчас лист фри готов
-	// в лист аллок надо добавить tmp_alloc_chunk
-	ft_add_chunk_to_list(malloc_manager, tmp_alloc_chunk);
-	return (tmp_alloc_chunk + sizeof(t_chunk));
+	// в лист аллок надо добавить alloc
+	ft_add_chunk_to_list(malloc_manager, alloc);
+	res = (void*)((uintptr_t)alloc + sizeof(t_chunk));
+	return (res);
 }
 
 void			*malloc(size_t size)

@@ -79,10 +79,26 @@ typedef struct		s_info
 */
 
 t_info				*ft_get_malloc_manager();
+int					ft_get_status(size_t size);
+t_zone				*ft_find_zone(void *ptr);
+t_chunk				*ft_find_chunk_in_alloc_list(void *ptr, t_zone *tmp_zone);
+void				*ft_memcpy(void *dst, const void *src, size_t n);
+void				ft_bzero(void *s, size_t n);
+void				ft_putchar(char c);
+void				ft_putstr(const char *s);
+void				ft_putadrr(size_t addr);
+void				ft_putnbr(size_t n);
+
 void				*malloc(size_t size);
 int					ft_find_block_size(size_t size, t_info *malloc_manager);
 size_t				ft_get_new_zone_size(int status, size_t size);
 
 void				free(void *ptr);
+
+void				*realloc(void *ptr, size_t size);
+
+void				*calloc(size_t num, size_t size);
+
+void				show_alloc_mem();
 
 #endif //FT_MALLOC_H

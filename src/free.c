@@ -9,7 +9,9 @@ static void		ft_get_chunk_to_free_list(t_chunk *tmp, t_zone *current)
 	t_chunk *start;
 
 	start = current->free_start;
-	if ((uintptr_t)start > (uintptr_t)tmp)
+	if (start == NULL)
+		current->free_start = tmp;
+	else if ((uintptr_t)start > (uintptr_t)tmp)
 	{
 		current->free_start = tmp;
 		tmp->next = start;
@@ -19,7 +21,7 @@ static void		ft_get_chunk_to_free_list(t_chunk *tmp, t_zone *current)
 	{
 		while (((uintptr_t)start < (uintptr_t)tmp) && start->next != NULL)
 			start = start->next;
-		if (start->next != NULL)
+		if ((uintptr_t)start > (uintptr_t)tmp)
 		{
 			start->prev->next = tmp;
 			tmp->prev = start->prev;
@@ -38,16 +40,14 @@ static void		ft_free_small_zone(t_zone *current, void *ptr)
 {
 	t_chunk *tmp;
 
-	tmp = current->alloc_start;
-	while (((uintptr_t)tmp < (uintptr_t)ptr) && tmp != NULL)
-		tmp = tmp->next;
+	tmp = ft_find_chunk_in_alloc_list(ptr, current);
 	if (tmp == NULL)
 		return ;
-	tmp = tmp->prev;
 	if (tmp->prev == NULL)
 	{
-		tmp->next->prev = NULL;
 		current->alloc_start = tmp->next;
+		if (tmp->next)
+			tmp->next->prev = NULL;
 		tmp->next = NULL;
 	}
 	else
@@ -78,27 +78,6 @@ static void		ft_free_large_zone(t_zone *current, void *ptr)
 		tmp->next = current->next;
 	}
 	munmap(current, current->size);
-}
-
-static t_zone	*ft_find_zone(void *ptr)
-{
-	t_zone *tmp;
-	t_info *malloc_manager;
-
-	tmp = NULL;
-	malloc_manager = ft_get_malloc_manager();
-	if (ptr != NULL && malloc_manager->start != 0x0)
-	{
-		tmp = malloc_manager->start;
-		while (tmp != NULL)
-		{
-			if ((uintptr_t)tmp < (uintptr_t)ptr
-			&& ((uintptr_t)tmp + tmp->size > (uintptr_t)ptr))
-				break ;
-			tmp = tmp->next;
-		}
-	}
-	return (tmp);
 }
 
 void			free(void *ptr)

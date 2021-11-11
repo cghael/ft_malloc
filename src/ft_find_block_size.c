@@ -4,22 +4,13 @@
 
 #include "ft_malloc.h"
 
-static int		get_status(size_t size)
-{
-	if (size <= TINY_SIZE)
-		return (TINY);
-	if (size <= SMALL_SIZE)
-		return (SMALL);
-	return (LARGE);
-}
-
 static t_zone		*search_free_zone(size_t size, t_info *malloc_manager)
 {
 	int		status;
 	t_zone	*tmp;
 	t_chunk	*tmp_chunk;
 
-	status = get_status(size);
+	status = ft_get_status(size);
 	if (status == LARGE)
 		return (NULL);
 	if (malloc_manager->start == 0x0)
@@ -86,7 +77,7 @@ static t_zone		*ft_allocate_new_zone(size_t size)
 	t_zone	*tmp;
 	size_t	zone_size;
 
-	status = get_status(size);
+	status = ft_get_status(size);
 	zone_size = ft_get_new_zone_size(status, size);
 
 	tmp = mmap(0, zone_size, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0); //todo разобраться с флагами
@@ -98,8 +89,8 @@ static t_zone		*ft_allocate_new_zone(size_t size)
 	tmp->alloc_start = NULL;
 	tmp->free_start = (t_chunk*)((uint64_t)tmp + sizeof(t_zone));
 	tmp->free_start->allowed_size = tmp->size - sizeof(t_zone) - sizeof(t_chunk);
-	tmp->free_start->next = tmp->free_start;
-	tmp->free_start->prev = tmp->free_start;
+	tmp->free_start->next = NULL;
+	tmp->free_start->prev = NULL;
 	tmp->next = NULL;
 	return (tmp);
 }

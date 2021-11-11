@@ -4,6 +4,34 @@
 
 #include "ft_malloc.h"
 
+static void		ft_unite_free_chunks(t_chunk *chunk)
+{
+	t_chunk *tmp;
+
+	tmp = chunk->next;
+	if (tmp)
+	{
+		if ((uintptr_t)chunk + sizeof(t_chunk) + chunk->allowed_size == (uintptr_t)tmp)
+		{
+			chunk->allowed_size += tmp->allowed_size + sizeof(t_chunk);
+			chunk->next = tmp->next;
+			if (chunk->next)
+				chunk->next->prev = chunk;
+		}
+	}
+	tmp = chunk->prev;
+	if (tmp)
+	{
+		if ((uintptr_t)tmp + sizeof(t_chunk) + tmp->allowed_size == (uintptr_t)chunk)
+		{
+			tmp->allowed_size += chunk->allowed_size + sizeof(t_chunk);
+			tmp->next = chunk->next;
+			if (tmp->next)
+				tmp->next->prev = tmp;
+		}
+	}
+}
+
 static void		ft_get_chunk_to_free_list(t_chunk *tmp, t_zone *current)
 {
 	t_chunk *start;
@@ -58,6 +86,7 @@ static void		ft_free_small_zone(t_zone *current, void *ptr)
 		tmp->prev = NULL;
 	}
 	ft_get_chunk_to_free_list(tmp, current);
+	ft_unite_free_chunks(tmp);
 }
 
 static void		ft_free_large_zone(t_zone *current, void *ptr)
@@ -92,5 +121,5 @@ void			free(void *ptr)
 		else
 			ft_free_small_zone(current, ptr);
 	}
-	ft_defragment();
+	//todo del zone if free only
 }

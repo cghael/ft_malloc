@@ -94,6 +94,7 @@ int					ft_find_block_size(size_t size, t_info *malloc_manager);
 size_t				ft_get_new_zone_size(int status, size_t size);
 
 void				free(void *ptr);
+void				ft_defragment();
 
 void				*realloc(void *ptr, size_t size);
 

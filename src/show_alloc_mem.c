@@ -21,12 +21,14 @@ static void		print_head(t_zone *start)
 static void		print_current_chunk(t_chunk *current)
 {
 	ft_putstr("0x");
-	ft_putadrr((size_t)current + (sizeof(t_chunk)));
+	ft_putadrr((size_t)current);
 	ft_putstr(" - 0x");
-	ft_putadrr((size_t)current + (sizeof(t_chunk)) + current->allowed_size);
-	ft_putstr(" : ");
+	ft_putadrr((size_t)current + sizeof(t_chunk) + current->allowed_size - 1);
+	ft_putstr(" : [");
 	ft_putnbr(current->allowed_size);
-	ft_putstr(" bytes\n");
+	ft_putstr(" + ");
+	ft_putnbr(sizeof(t_chunk));
+	ft_putstr("] bytes\n");
 }
 
 static void		print_all_chunks(t_zone *zone)
@@ -85,6 +87,3 @@ void			show_alloc_mem()
 		tmp = tmp->next;
 	}
 }
-
-//452301 6192 - zone
-//452301 6267 - chunk

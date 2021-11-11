@@ -92,4 +92,5 @@ void			free(void *ptr)
 		else
 			ft_free_small_zone(current, ptr);
 	}
+	ft_defragment();
 }

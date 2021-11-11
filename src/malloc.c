@@ -51,13 +51,13 @@ static void		*ft_memory_allocation(size_t size, t_info *malloc_manager)
 
 	if (free->allowed_size > (size + sizeof(t_chunk)))
 	{
-		free = (t_chunk *)((uint64_t)free + size + sizeof(t_chunk) + 1);
+		free = (t_chunk *)((uint64_t)free + size + sizeof(t_chunk));
 		free->next = alloc->next;
 		free->prev = alloc->prev;
 		if (free->prev == NULL)
 			malloc_manager->current_zone->free_start = free;
 		free->allowed_size =
-				alloc->allowed_size - size - sizeof(t_chunk) - 1;
+				alloc->allowed_size - size - sizeof(t_chunk);
 	}
 	else
 	{

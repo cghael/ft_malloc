@@ -19,9 +19,6 @@
 ** --------------------------------- defines -----------------------------------
 */
 
-# define NOT_ALLOCATED			0
-# define ALLOCATED				1
-
 # define TINY_SIZE				512
 # define SMALL_SIZE				1024
 # define TINY					0
@@ -92,9 +89,11 @@ void				ft_putnbr(size_t n);
 void				*malloc(size_t size);
 int					ft_find_block_size(size_t size, t_info *malloc_manager);
 size_t				ft_get_new_zone_size(int status, size_t size);
+void				*ft_memory_allocation(size_t size, t_chunk *free);
 
 void				free(void *ptr);
-void				ft_defragment();
+void				ft_free_chunk(t_zone *current, t_chunk *tmp, void *ptr);
+void				ft_unite_with_next(t_chunk *current, t_zone *zone);
 
 void				*realloc(void *ptr, size_t size);
 

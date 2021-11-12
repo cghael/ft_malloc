@@ -48,7 +48,7 @@ t_chunk	*ft_find_chunk_in_alloc_list(void *ptr, t_zone *tmp_zone)
 	tmp = tmp_zone->alloc_start;
 	while (tmp != NULL)
 	{
-		if ((uintptr_t)tmp < (uintptr_t)ptr
+		if ((uintptr_t)tmp <= (uintptr_t)ptr
 		&& ((uintptr_t)tmp + sizeof(t_chunk) + tmp->allowed_size >= (uintptr_t)ptr))
 			return (tmp);
 		tmp = tmp->next;

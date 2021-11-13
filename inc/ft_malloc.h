@@ -14,6 +14,7 @@
 # include <stdio.h>
 # include <sys/mman.h>
 # include <inttypes.h>
+# include <pthread.h>
 
 /*
 ** --------------------------------- defines -----------------------------------
@@ -68,6 +69,8 @@ typedef struct		s_info
 	t_zone			*start;
 	t_zone			*current_zone;
 	t_chunk			*current_chunk;
+	pthread_mutex_t	mutex;
+	int				init;
 }					t_info;
 
 
@@ -100,5 +103,8 @@ void				*realloc(void *ptr, size_t size);
 void				*calloc(size_t num, size_t size);
 
 void				show_alloc_mem();
+
+int					unsecure_malloc();
+int					secure_malloc();
 
 #endif //FT_MALLOC_H

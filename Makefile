@@ -13,7 +13,8 @@ SRC_LIST	= malloc.c \
 			ft_memory_allocation.c \
 			ft_unite_with_next.c \
 			realloc.c \
-			show_alloc_mem.c
+			show_alloc_mem.c \
+			ft_malloc_multithread.c
 SRC			= $(addprefix $(SRC_DIR), $(SRC_LIST))
 
 OBJ_DIR		= obj/

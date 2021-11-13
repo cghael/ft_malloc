@@ -10,14 +10,18 @@ void			*malloc(size_t size)
 	int				tmp_res;
 	t_info			*malloc_manager;
 
-	// todo проверка на мьютекс для бонусов
-
 	res = NULL;
-	if (size == 0)
+	if (secure_malloc())
 		return (res);
+	if (size == 0)
+	{
+		unsecure_malloc();
+		return (res);
+	}
 	malloc_manager = ft_get_malloc_manager();
 	tmp_res = ft_find_block_size(size, malloc_manager);							// проверяем, можно ли вообще выделить память такого размера
 	if (tmp_res == EXIT_SUCCESS)												// если можно,
 		res = ft_memory_allocation(size, malloc_manager->current_chunk);		// выделяем память
+	unsecure_malloc();
 	return (res);
 }

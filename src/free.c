@@ -55,13 +55,11 @@ static void		ft_free_zone_handler(t_zone *current)
 	}
 }
 
-void			free(void *ptr)
+void			unsafe_free(void *ptr)
 {
 	t_zone *current;
 	t_chunk	*tmp;
 
-	if (secure_malloc())
-		return ;
 	current = ft_find_zone(ptr);
 	if (current != NULL)
 	{
@@ -76,5 +74,12 @@ void			free(void *ptr)
 				ft_free_zone_handler(current);
 		}
 	}
+}
+
+void			free(void *ptr)
+{
+	if (secure_malloc())
+		return ;
+	unsafe_free(ptr);
 	unsecure_malloc();
 }

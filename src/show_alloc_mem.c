@@ -125,7 +125,7 @@ static void		ft_print_total(t_zone *tmp)
 	ft_putstr("\n\n");
 }
 
-void			show_alloc_mem()
+void			unsafe_show_alloc_mem()
 {
 	t_info *malloc_manager;
 	t_zone *tmp;
@@ -148,4 +148,12 @@ void			show_alloc_mem()
 	}
 	ft_print_total(malloc_manager->start);
 	ft_putstr("\n******************************\n\n");
+}
+
+void			show_alloc_mem()
+{
+	if (secure_malloc())
+		return ;
+	unsafe_show_alloc_mem();
+	unsecure_malloc();
 }

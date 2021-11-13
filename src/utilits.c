@@ -17,6 +17,12 @@ t_info		*ft_get_malloc_manager()
 {
 	static t_info	malloc_manager;
 
+	if (malloc_manager.init == 0)
+	{
+		malloc_manager.init = 1;
+		pthread_mutex_init(&malloc_manager.mutex, NULL);
+	}
+
 	return (&malloc_manager);
 }
 

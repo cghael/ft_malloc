@@ -1,6 +1,16 @@
 #include "ft_malloc.h"
 #include <string.h>
 
+void *foo()
+{
+	void *res;
+
+	res = malloc(100 * 1024);
+	show_alloc_mem();
+	free(res);
+	return (NULL);
+}
+
 int main()
 {
 	int		i = 0;
@@ -102,6 +112,16 @@ int main()
 	free(y);
 	free(z);
 	free(ptr);
+	show_alloc_mem();
+
+	ft_putstr("- - - - - - - - - PART SEVEN - - - - - - - - -\n");
+	pthread_t	thread1;
+	pthread_t	thread2;
+
+	pthread_create(&thread1, NULL, foo, NULL);
+	pthread_create(&thread2, NULL, foo, NULL);
+	pthread_join(thread1, NULL);
+	pthread_join(thread2, NULL);
 	show_alloc_mem();
 
 	return 0;

@@ -11,15 +11,15 @@ void			*ft_reallocate( size_t size, t_chunk *tmp_chunk, void *ptr)
 	void	*buffer;
 
 	cpy_size = tmp_chunk->allowed_size > size ? size : tmp_chunk->allowed_size;
-	buffer = malloc((cpy_size > SMALL_SIZE) ? size : SMALL_SIZE + 1);
+	buffer = unsafe_malloc((cpy_size > SMALL_SIZE) ? size : SMALL_SIZE + 1);
 	if (buffer == NULL)
 		return (NULL);
 	ft_memcpy(buffer, ptr, cpy_size);
-	new = malloc(size);
+	new = unsafe_malloc(size);
 	if (new)
 		ft_memcpy(new, buffer, cpy_size);
-	free(buffer);
-	free(tmp_chunk);
+	unsafe_free(buffer);
+	unsafe_free(tmp_chunk);
 	unsecure_malloc();
 	return (new);
 }
@@ -33,11 +33,11 @@ void			*realloc(void *ptr, size_t size)
 	if (secure_malloc())
 		return (NULL);
 	if (ptr == NULL)
-		return (malloc(size));
+		return (unsafe_malloc(size));
 	if (size == 0)
 	{
-		free(ptr);
-		return (malloc(size));
+		unsafe_free(ptr);
+		return (unsafe_malloc(size));
 	}
 	tmp_zone = ft_find_zone(ptr);
 	if (tmp_zone == NULL)

@@ -90,11 +90,13 @@ void				ft_putadrr(size_t addr);
 void				ft_putnbr(size_t n);
 
 void				*malloc(size_t size);
+void				*unsafe_malloc(size_t size);
 int					ft_find_block_size(size_t size, t_info *malloc_manager);
 size_t				ft_get_new_zone_size(int status, size_t size);
 void				*ft_memory_allocation(size_t size, t_chunk *free);
 
 void				free(void *ptr);
+void				unsafe_free(void *ptr);
 void				ft_free_chunk(t_zone *current, t_chunk *tmp);
 void				ft_unite_with_next(t_chunk *current, t_zone *zone);
 
@@ -103,6 +105,7 @@ void				*realloc(void *ptr, size_t size);
 void				*calloc(size_t num, size_t size);
 
 void				show_alloc_mem();
+void				unsafe_show_alloc_mem();
 
 int					unsecure_malloc();
 int					secure_malloc();

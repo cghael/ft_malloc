@@ -52,7 +52,7 @@ typedef struct		s_chunk
 
 typedef struct		s_zone
 {
-	unsigned int	status;			// ТИНИ, СМОЛ или ЛАРДЖ
+	int				status;			// ТИНИ, СМОЛ или ЛАРДЖ
 	uint64_t		size;			// количесто байт всего в зоне
 	t_chunk			*free_start;
 	t_chunk			*alloc_start;
@@ -92,7 +92,7 @@ size_t				ft_get_new_zone_size(int status, size_t size);
 void				*ft_memory_allocation(size_t size, t_chunk *free);
 
 void				free(void *ptr);
-void				ft_free_chunk(t_zone *current, t_chunk *tmp, void *ptr);
+void				ft_free_chunk(t_zone *current, t_chunk *tmp);
 void				ft_unite_with_next(t_chunk *current, t_zone *zone);
 
 void				*realloc(void *ptr, size_t size);

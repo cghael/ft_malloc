@@ -36,15 +36,15 @@ static void		ft_get_chunk_to_free_list(t_chunk *tmp, t_zone *current)
 	}
 }
 
-void			ft_free_chunk(t_zone *current, t_chunk *tmp, void *ptr)
+void			ft_free_chunk(t_zone *current, t_chunk *tmp)
 {
 	if (tmp == NULL)
 		return ;
 	if (tmp->prev == NULL)
 	{
 		current->alloc_start = tmp->next;
-		if (tmp->next)
-			tmp->next->prev = NULL;
+		if (current->alloc_start)
+			current->alloc_start->prev = NULL;
 		tmp->next = NULL;
 	}
 	else

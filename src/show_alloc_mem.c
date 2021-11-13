@@ -135,6 +135,7 @@ void			show_alloc_mem()
 	if (tmp == NULL)
 	{
 		ft_putstr("NO ALLOCATED MEMORY\n");
+		ft_putstr("\n******************************\n\n");
 		return;
 	}
 	ft_putstr("\n");

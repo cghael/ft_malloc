@@ -30,6 +30,7 @@ void			ft_unite_with_next(t_chunk *current, t_zone *zone)
 			if (next_chunk)
 			{
 				current->next = next_chunk;
+				next_chunk->prev = current;
 			}
 		}
 		else

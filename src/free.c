@@ -68,7 +68,7 @@ void			free(void *ptr)
 		else
 		{
 			tmp = ft_find_chunk_in_alloc_list(ptr, current);
-			ft_free_chunk(current, tmp, ptr);
+			ft_free_chunk(current, tmp);
 			ft_unite_free_chunks(tmp, current);
 			if (current->alloc_start == NULL)
 				ft_free_zone_handler(current);

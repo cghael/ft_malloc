@@ -13,7 +13,7 @@
 **			27 + 10 = 37 -> 37 / 10 = 3 -> 3 * 10 = 30 (30 > 27, так что все поместится и кратно 10)
 */
 
-static size_t	get_small_tiny_zone_size(int status, size_t size, size_t page_size)
+static size_t	get_small_tiny_zone_size(int status, size_t page_size)
 {
 	size_t		zone_size;
 	size_t		status_size;
@@ -45,10 +45,10 @@ size_t			ft_get_new_zone_size(int status, size_t size)
 	size_t	zone_size;
 	size_t	page_size;
 
-	page_size =  getpagesize(); //todo понять что за пейдж сайз
+	page_size =  getpagesize();
 	if (status == LARGE)
 		zone_size = get_large_zone_size(size, page_size);
 	else
-		zone_size = get_small_tiny_zone_size(status, size, page_size);
+		zone_size = get_small_tiny_zone_size(status, page_size);
 	return (zone_size);
 }
